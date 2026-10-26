@@ -1,1 +1,1269 @@
+<!DOCTYPE html>
+<html lang="es">
 
+<head>
+
+  <base target="_top">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+
+  <style>
+
+    :root {
+      --bg: #f4f6f8;
+      --card: #ffffff;
+      --text: #17212b;
+      --muted: #68737d;
+      --border: #e4e8ec;
+      --accent: #315c4c;
+      --accent-soft: #e9f1ed;
+      --positive: #26734d;
+      --negative: #b23b3b;
+      --shadow: 0 4px 18px rgba(0,0,0,.055);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .container {
+      max-width: 1250px;
+      margin: auto;
+      padding: 28px 20px 50px;
+    }
+
+    .header {
+      margin-bottom: 25px;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 7px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 30px;
+    }
+
+    .subtitle {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .toolbar {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 18px;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    label {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    select {
+      min-width: 190px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: white;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      min-height: 105px;
+    }
+
+    .card-label {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .card-value {
+      font-size: 23px;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .card-note {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .positive {
+      color: var(--positive);
+    }
+
+    .negative {
+      color: var(--negative);
+    }
+
+    .section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+
+    .section h2 {
+      margin: 0 0 5px;
+      font-size: 18px;
+    }
+
+    .section-description {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .chart {
+      width: 100%;
+      height: 320px;
+    }
+
+    .electricity-box {
+      background: var(--accent-soft);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+
+    .electricity-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .electricity-description {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .electricity-value {
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .detail-toolbar {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th {
+      text-align: left;
+      padding: 11px 10px;
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    td.amount {
+      text-align: right;
+      white-space: nowrap;
+      font-weight: 600;
+    }
+
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 30px;
+    }
+
+    .loading {
+      position: fixed;
+      inset: 0;
+      background: rgba(244,246,248,.94);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 25px;
+    }
+
+    @media (max-width: 900px) {
+
+      .cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+    @media (max-width: 520px) {
+
+      .container {
+        padding: 18px 12px 35px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .cards {
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
+      }
+
+      .card {
+        padding: 14px;
+        min-height: 95px;
+      }
+
+      .card-value {
+        font-size: 18px;
+      }
+
+      select {
+        width: 100%;
+      }
+
+      .toolbar {
+        align-items: stretch;
+      }
+
+      .chart {
+        height: 280px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+<div id="loading" class="loading">
+  Cargando información...
+</div>
+
+
+<div class="container">
+
+
+  <header class="header">
+
+    <div class="eyebrow">
+      Administración
+    </div>
+
+    <h1>
+      Dashboard de Administración Financiera
+    </h1>
+
+    <div class="subtitle">
+      Resumen financiero y movimientos del consorcio
+    </div>
+
+  </header>
+
+
+  <div class="toolbar">
+
+    <label for="monthSelect">
+      Mes consultado
+    </label>
+
+    <select
+      id="monthSelect"
+      onchange="updateDashboard()"
+    ></select>
+
+  </div>
+
+
+  <div class="cards">
+
+
+    <div class="card">
+      <div class="card-label">Saldo inicial</div>
+      <div id="openingBalance" class="card-value">$0</div>
+      <div class="card-note">
+        Saldo real de la cuenta al inicio del mes
+      </div>
+    </div>
+
+
+    <div class="card">
+      <div class="card-label">Ingresos del consorcio</div>
+      <div id="totalIncome" class="card-value">$0</div>
+      <div class="card-note">
+        Expensas, rendimientos y otros ingresos
+      </div>
+    </div>
+
+
+    <div class="card">
+      <div class="card-label">Gastos del consorcio</div>
+      <div id="totalExpenses" class="card-value">$0</div>
+      <div class="card-note">
+        Gastos de gestión sin electricidad
+      </div>
+    </div>
+
+
+    <div class="card">
+      <div class="card-label">Resultado de gestión</div>
+      <div id="monthlyResult" class="card-value">$0</div>
+      <div class="card-note">
+        Ingresos menos gastos, sin electricidad
+      </div>
+    </div>
+
+
+    <div class="card">
+      <div class="card-label">Saldo final</div>
+      <div id="closingBalance" class="card-value">$0</div>
+      <div class="card-note">
+        Saldo real de la cuenta al cierre
+      </div>
+    </div>
+
+
+    <div class="card">
+      <div class="card-label">Expensas cobradas</div>
+      <div id="expensas" class="card-value">$0</div>
+      <div class="card-note">
+        Aportes registrados durante el mes
+      </div>
+    </div>
+
+
+    <div class="card">
+      <div class="card-label">Unidades al día</div>
+      <div id="unitsPaid" class="card-value">0 de 8</div>
+      <div class="card-note">
+        Unidades con expensa registrada
+      </div>
+    </div>
+
+
+    <div class="card">
+      <div class="card-label">Rendimientos</div>
+      <div id="yields" class="card-value">$0</div>
+      <div class="card-note">
+        Rendimientos financieros registrados
+      </div>
+    </div>
+
+
+  </div>
+
+
+  <div class="electricity-box">
+
+    <div class="electricity-title">
+      ⚡ Electricidad del mes
+    </div>
+
+    <div class="electricity-description">
+      Concepto informativo. La electricidad se recauda
+      específicamente para el pago del servicio y no se
+      incluye dentro de los gastos de gestión.
+    </div>
+
+    <div
+      id="electricityInfo"
+      class="electricity-value"
+    ></div>
+
+  </div>
+
+
+  <div class="charts-grid">
+
+
+    <section class="section">
+
+      <h2>Evolución del fondo</h2>
+
+      <p class="section-description">
+        Saldo real acumulado al cierre de cada mes.
+      </p>
+
+      <div id="balanceChart" class="chart"></div>
+
+    </section>
+
+
+    <section class="section">
+
+      <h2>Expensas vs. mantenimiento</h2>
+
+      <p class="section-description">
+        Comparación mensual de los principales movimientos
+        propios del consorcio.
+      </p>
+
+      <div id="comparisonChart" class="chart"></div>
+
+    </section>
+
+
+  </div>
+
+
+  <section class="section">
+
+    <h2>Gastos de mantenimiento</h2>
+
+    <p class="section-description">
+      Distribución de los gastos de mantenimiento
+      correspondientes al mes seleccionado.
+    </p>
+
+    <div id="maintenanceChart" class="chart"></div>
+
+  </section>
+
+
+  <section class="section">
+
+    <h2>Detalle de movimientos</h2>
+
+    <p class="section-description">
+      Consultá los movimientos registrados según mes y concepto.
+    </p>
+
+
+    <div class="detail-toolbar">
+
+      <label for="categorySelect">
+        Concepto
+      </label>
+
+      <select
+        id="categorySelect"
+        onchange="renderMovements()"
+      ></select>
+
+    </div>
+
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Descripción</th>
+            <th>Subcategoría</th>
+            <th>Proveedor / Persona</th>
+            <th style="text-align:right">Importe</th>
+          </tr>
+        </thead>
+
+        <tbody id="movementsBody"></tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+
+  <div class="footer">
+    Proyecto demostrativo · Administración financiera
+  </div>
+
+
+</div>
+
+
+<script>
+
+  let DATA = null;
+
+
+  google.charts.load(
+    'current',
+    {
+      packages: ['corechart']
+    }
+  );
+
+
+  google.charts.setOnLoadCallback(loadData);
+
+
+  function loadData() {
+
+    google.script.run
+
+      .withSuccessHandler(initialize)
+
+      .withFailureHandler(showError)
+
+      .getDashboardData();
+
+  }
+
+
+  function initialize(data) {
+
+    DATA = data;
+
+
+    const monthSelect =
+      document.getElementById('monthSelect');
+
+
+    const categorySelect =
+      document.getElementById('categorySelect');
+
+
+    monthSelect.innerHTML = '';
+
+    categorySelect.innerHTML = '';
+
+
+    data.months.forEach(month => {
+
+      const option =
+        document.createElement('option');
+
+      option.value = month.key;
+
+      option.textContent = month.label;
+
+      monthSelect.appendChild(option);
+
+    });
+
+
+    data.categories.forEach(category => {
+
+      const option =
+        document.createElement('option');
+
+      option.value = category;
+
+      option.textContent =
+        titleCase(category);
+
+      categorySelect.appendChild(option);
+
+    });
+
+
+    if (data.months.length) {
+
+      monthSelect.value =
+        data.months[
+          data.months.length - 1
+        ].key;
+
+    }
+
+
+    if (
+      data.categories.includes(
+        'MANTENIMIENTO'
+      )
+    ) {
+
+      categorySelect.value =
+        'MANTENIMIENTO';
+
+    }
+
+
+    updateDashboard();
+
+
+    document
+      .getElementById('loading')
+      .style.display = 'none';
+
+  }
+
+
+  function updateDashboard() {
+
+    if (!DATA) return;
+
+
+    const key =
+      document
+        .getElementById('monthSelect')
+        .value;
+
+
+    const month =
+      DATA.monthly.find(
+        m => m.key === key
+      );
+
+
+    if (!month) return;
+
+
+    setMoney(
+      'openingBalance',
+      month.openingBalance
+    );
+
+
+    setMoney(
+      'closingBalance',
+      month.closingBalance
+    );
+
+
+    setMoney(
+      'totalIncome',
+      month.managementIncome
+    );
+
+
+    setMoney(
+      'totalExpenses',
+      month.managementExpenses
+    );
+
+
+    setMoney(
+      'expensas',
+      month.expensas
+    );
+
+
+    setMoney(
+      'yields',
+      month.yields
+    );
+
+
+    const result =
+      document.getElementById(
+        'monthlyResult'
+      );
+
+
+    result.textContent =
+      money(month.managementResult);
+
+
+    result.classList.remove(
+      'positive',
+      'negative'
+    );
+
+
+    if (month.managementResult > 0) {
+      result.classList.add('positive');
+    }
+
+
+    if (month.managementResult < 0) {
+      result.classList.add('negative');
+    }
+
+
+    document
+      .getElementById('unitsPaid')
+      .textContent =
+        `${month.unitsPaidCount} de ${month.unitsTotal}`;
+
+
+    renderElectricity(month);
+
+    drawCharts();
+
+    renderMovements();
+
+  }
+
+
+  function renderElectricity(month) {
+
+    const el =
+      document.getElementById(
+        'electricityInfo'
+      );
+
+
+    if (!month.electricityPayments.length) {
+
+      el.innerHTML =
+        'Sin pago de electricidad registrado en este mes.';
+
+      return;
+
+    }
+
+
+    const payments =
+      month.electricityPayments
+
+        .map(
+          p =>
+            `${money(p.amount)} · pagado el ${p.date}`
+        )
+
+        .join('<br>');
+
+
+    el.innerHTML =
+      `✓ Factura pagada: ${payments}`;
+
+  }
+
+
+  function renderMovements() {
+
+    if (!DATA) return;
+
+
+    const month =
+      document
+        .getElementById('monthSelect')
+        .value;
+
+
+    const category =
+      document
+        .getElementById('categorySelect')
+        .value;
+
+
+    const rows =
+      DATA.movements.filter(
+        m =>
+          m.monthKey === month &&
+          m.category === category
+      );
+
+
+    const body =
+      document.getElementById(
+        'movementsBody'
+      );
+
+
+    body.innerHTML = '';
+
+
+    if (!rows.length) {
+
+      body.innerHTML =
+        '<tr>' +
+        '<td colspan="5" class="empty">' +
+        'No hay movimientos para esta selección.' +
+        '</td>' +
+        '</tr>';
+
+      return;
+
+    }
+
+
+    rows.forEach(m => {
+
+      const tr =
+        document.createElement('tr');
+
+
+      tr.innerHTML = `
+
+        <td>
+          ${escapeHtml(m.date)}
+        </td>
+
+        <td>
+          ${escapeHtml(
+            titleCase(m.description)
+          )}
+        </td>
+
+        <td>
+          ${escapeHtml(
+            titleCase(
+              m.subcategory || '—'
+            )
+          )}
+        </td>
+
+        <td>
+          ${escapeHtml(
+            titleCase(
+              m.person || '—'
+            )
+          )}
+        </td>
+
+        <td class="amount">
+          ${money(m.amount)}
+        </td>
+
+      `;
+
+
+      body.appendChild(tr);
+
+    });
+
+  }
+
+
+  function drawCharts() {
+
+    if (
+      !DATA ||
+      !DATA.monthly.length
+    ) return;
+
+
+    drawBalanceChart();
+
+    drawComparisonChart();
+
+    drawMaintenanceChart();
+
+  }
+
+
+  function drawBalanceChart() {
+
+    const table =
+      new google.visualization.DataTable();
+
+
+    table.addColumn(
+      'string',
+      'Mes'
+    );
+
+
+    table.addColumn(
+      'number',
+      'Saldo acumulado'
+    );
+
+
+    DATA.monthly.forEach(m => {
+
+      table.addRow([
+        m.label,
+        m.closingBalance
+      ]);
+
+    });
+
+
+    const chart =
+      new google.visualization.LineChart(
+        document.getElementById(
+          'balanceChart'
+        )
+      );
+
+
+    chart.draw(
+      table,
+      {
+
+        legend: {
+          position: 'none'
+        },
+
+        chartArea: {
+          left: 75,
+          top: 20,
+          width: '78%',
+          height: '70%'
+        },
+
+        backgroundColor:
+          'transparent',
+
+        pointSize: 5,
+
+        lineWidth: 3,
+
+        vAxis: {
+          format: '$#,##0'
+        }
+
+      }
+    );
+
+  }
+
+
+  function drawComparisonChart() {
+
+    const table =
+      new google.visualization.DataTable();
+
+
+    table.addColumn(
+      'string',
+      'Mes'
+    );
+
+
+    table.addColumn(
+      'number',
+      'Expensas'
+    );
+
+
+    table.addColumn(
+      'number',
+      'Mantenimiento'
+    );
+
+
+    DATA.monthly.forEach(m => {
+
+      table.addRow([
+        m.label,
+        m.expensas,
+        m.maintenance
+      ]);
+
+    });
+
+
+    const chart =
+      new google.visualization.ColumnChart(
+        document.getElementById(
+          'comparisonChart'
+        )
+      );
+
+
+    chart.draw(
+      table,
+      {
+
+        legend: {
+          position: 'bottom'
+        },
+
+        backgroundColor:
+          'transparent',
+
+        chartArea: {
+          left: 75,
+          top: 20,
+          width: '78%',
+          height: '65%'
+        },
+
+        vAxis: {
+          format: '$#,##0'
+        }
+
+      }
+    );
+
+  }
+
+
+  function drawMaintenanceChart() {
+
+    const key =
+      document
+        .getElementById('monthSelect')
+        .value;
+
+
+    const month =
+      DATA.monthly.find(
+        m => m.key === key
+      );
+
+
+    const container =
+      document.getElementById(
+        'maintenanceChart'
+      );
+
+
+    if (
+      !month ||
+      !month.maintenanceBreakdown.length
+    ) {
+
+      container.innerHTML =
+        '<div class="empty">' +
+        'Sin gastos de mantenimiento registrados.' +
+        '</div>';
+
+      return;
+
+    }
+
+
+    const table =
+      new google.visualization.DataTable();
+
+
+    table.addColumn(
+      'string',
+      'Concepto'
+    );
+
+
+    table.addColumn(
+      'number',
+      'Importe'
+    );
+
+
+    month
+      .maintenanceBreakdown
+      .forEach(item => {
+
+        table.addRow([
+          titleCase(item.name),
+          item.amount
+        ]);
+
+      });
+
+
+    const chart =
+      new google.visualization.BarChart(
+        container
+      );
+
+
+    chart.draw(
+      table,
+      {
+
+        legend: {
+          position: 'none'
+        },
+
+        backgroundColor:
+          'transparent',
+
+        chartArea: {
+          left: 110,
+          top: 15,
+          width: '70%',
+          height: '75%'
+        },
+
+        hAxis: {
+          format: '$#,##0'
+        }
+
+      }
+    );
+
+  }
+
+
+  function money(value) {
+
+    return new Intl.NumberFormat(
+      'es-AR',
+      {
+
+        style: 'currency',
+
+        currency: 'ARS',
+
+        minimumFractionDigits: 2,
+
+        maximumFractionDigits: 2
+
+      }
+
+    ).format(
+      Number(value) || 0
+    );
+
+  }
+
+
+  function setMoney(id, value) {
+
+    document
+      .getElementById(id)
+      .textContent =
+        money(value);
+
+  }
+
+
+  function titleCase(text) {
+
+    if (!text) return '';
+
+
+    return String(text)
+
+      .toLowerCase()
+
+      .replace(
+        /\b\w/g,
+        char =>
+          char.toUpperCase()
+      );
+
+  }
+
+
+  function escapeHtml(text) {
+
+    return String(
+      text ?? ''
+    )
+
+      .replace(/&/g, '&amp;')
+
+      .replace(/</g, '&lt;')
+
+      .replace(/>/g, '&gt;')
+
+      .replace(/"/g, '&quot;')
+
+      .replace(/'/g, '&#039;');
+
+  }
+
+
+  function showError(error) {
+
+    document
+      .getElementById('loading')
+      .innerHTML =
+
+        'No se pudo cargar la información.' +
+
+        '<br><br>' +
+
+        escapeHtml(
+          error.message || error
+        );
+
+  }
+
+
+  let resizeTimer;
+
+
+  window.addEventListener(
+    'resize',
+    () => {
+
+      clearTimeout(
+        resizeTimer
+      );
+
+
+      resizeTimer =
+        setTimeout(
+          () => {
+
+            if (DATA) {
+              drawCharts();
+            }
+
+          },
+          200
+        );
+
+    }
+  );
+
+
+</script>
+
+
+</body>
+
+</html>
